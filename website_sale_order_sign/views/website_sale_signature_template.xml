@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2022 Sodexis License OPL-1 (See LICENSE file for full copyright
+    and licensing details). -->
+<odoo>
+    <template id="webiste_sale_order_signature" name="Order Signature" inherit_id="website_sale.payment">
+        <xpath expr="//div[@id='payment_method']" position="before">
+            <t t-if="not website_sale_order.signature">
+                <div id="order_signature" class="mt-3">
+                    <h3 class="mb24">Sign &amp; Pay</h3>
+                    <div class="row">
+                        <div class="col-lg-8">
+                             <t t-call="portal.signature_form">
+                                 <t t-set="call_url" t-value="website_sale_order.get_portal_url('/shop/payment')"/>
+                                 <t t-set="default_name" t-value="website_sale_order.partner_id.name"/>
+                             </t>
+                        </div>
+                    </div>
+                </div>
+             </t>
+        </xpath>
+        <!-- we shouldn't be able to pay if there is no way to deliver or if not signed the order -->
+        <xpath expr="//div[@id='payment_method']" position="attributes">
+            <attribute name="t-att-style">'display: none!important' if (not deliveries and delivery_has_storable) or (not website_sale_order.signature) else ''</attribute>
+        </xpath>
+    </template>
+
+</odoo>
