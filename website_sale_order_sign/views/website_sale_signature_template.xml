@@ -7,6 +7,10 @@
             <t t-if="not website_sale_order.signature">
                 <div id="order_signature" class="mt-3">
                     <h3 class="mb24">Sign &amp; Pay</h3>
+                    <div id="terms" class="mt-3" t-if="website_sale_order.note">
+                        <hr class="mt-0 mb-1"/>
+                        <em t-field="website_sale_order.note"/>
+                    </div>
                     <div class="row">
                         <div class="col-lg-8">
                              <t t-call="portal.signature_form">
@@ -17,13 +21,6 @@
                     </div>
                 </div>
              </t>
-        </xpath>
-        <xpath expr="//div[@id='payment_method']" position="after">
-            <div id="terms" class="mt-3" t-if="website_sale_order.note">
-                <h3>Terms &amp; Conditions</h3>
-                <hr class="mt-0 mb-1"/>
-                <em t-field="website_sale_order.note"/>
-            </div>
         </xpath>
         <!-- we shouldn't be able to pay if there is no way to deliver or if not signed the order -->
         <xpath expr="//div[@id='payment_method']" position="attributes">
