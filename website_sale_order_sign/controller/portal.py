@@ -37,7 +37,13 @@ class CustomerPortal(CustomerPortal):
             'sale.order', order_sudo.id, _('Order signed by %s') % (name,),
             attachments=[('%s.pdf' % order_sudo.name, pdf)],
             **({'token': access_token} if access_token else {}))
+        redirect_url = request.httprequest.url_root
+        ends_with_slash = redirect_url.endswith("/")
+        if ends_with_slash:
+            redirect_url = F"{redirect_url}shop/payment"
+        else:
+            redirect_url = F"{redirect_url}/shop/payment"
         return {
             'force_refresh': True,
-            'redirect_url': F'{request.env["ir.config_parameter"].sudo().get_param("web.base.url")}/shop/payment',
+            'redirect_url': redirect_url
         }
